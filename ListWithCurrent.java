@@ -20,8 +20,8 @@ public class ListWithCurrent {
 
     private Node head;
     private Node tail;
-    private Node current;
     private int count;
+    private Node current; 
 
    
     public ListWithCurrent() {
@@ -44,18 +44,21 @@ public class ListWithCurrent {
         count = 0;
     }
 
-    public void add(Integer element) {
+    public void addcurrent(Integer element) {
         Node n = new Node(element);
         if (head == null) {
             head = n;
+            current = n;
         } else {
             tail.next = n;
+            current = n;
         }
         tail = n;
+        current =n;
         count++;
     }
 
-    public void add(int index, Integer element) { 
+    public void addcurrent(int index, Integer element) { 
         if (index < 0 || index > size())
             throw new IndexOutOfBoundsException(); 
 
@@ -65,47 +68,54 @@ public class ListWithCurrent {
         if (index == 0) { 
             if (head == null) { 
                 tail = n;
+                current = n;
             } else {
                 n.next = head;
             }
             head = n;
-            
+            current = n;
+
         } else if (index == count) { 
             tail.next = n;
             tail = n;
-        } else { 
+            current = n;
+             } else { 
             Node ant = head;
-            for (int i = 0; i < index - 1; i++)
+            for (int i = 0; i < index - 1; i++){
                 ant = ant.next;
+                NumAuxNext++;
+            }
             n.next = ant.next;
             ant.next = n;
+            current = n;
+
         }
     }
-
 
     public int getNumAuxNext() {
         return NumAuxNext;
     }
 
-    public Integer get(int index) { // O(n)
+    public Integer getcurrent(int index) { // O(n)
         if ((index < 0) || (index >= count)) {
             throw new IndexOutOfBoundsException();
         }
-        if (index == count - 1)
-            return tail.element;
+        if (index == count - 1){//index igual ao tamanho -1(ou seja index vai para a tail)
+            current = tail;
+            return tail.element;}
 
         Node aux = head;
         int c = 0;
         while (c < index) {
             aux = aux.next;
             NumAuxNext++;
-
             c++;
+            current = aux;
         }
         return (aux.element);
     }
 
-    public Integer removeByIndex(int index) {
+    public Integer removeByIndexcuent(int index) {
         if (index < 0 || index >= size())
             throw new IndexOutOfBoundsException(); 
         if (index == 0) {
@@ -120,6 +130,7 @@ public class ListWithCurrent {
         Node ant = null;
         for (int i = 0; i < index; i++) {
             ant = aux;
+            current = aux;
             aux = aux.next;
             NumAuxNext++;
 
@@ -129,6 +140,8 @@ public class ListWithCurrent {
             tail.next = null;
         } else { 
             ant.next = aux.next;
+            NumAuxNext++;
+            current = aux.next;
             NumAuxNext++;
 
         }
